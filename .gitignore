@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Unity generated
 [Ll]ibrary/
 [Tt]emp/
@@ -32,3 +33,30 @@ Assets/TextMesh Pro/Examples&Extras/
 *.wav
 *.aif
 *.aiff
+=======
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild*/
+/[Ll]ogs/
+/[Uu]serSettings/
+/MemoryCaptures/
+/ProjectSettings/EditorBuildSettings.asset
+/[Pp]ackages/com.unity.testtools.codecoverage/
+
+*.csproj
+*.unityproj
+*.sln
+*.user
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+.vs/
+.idea/
+.DS_Store
+Thumbs.db
+>>>>>>> main
