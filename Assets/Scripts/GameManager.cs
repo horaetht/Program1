@@ -4,8 +4,13 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     [Header("Refs")]
-    public TextMeshProUGUI scoreText;  // 拖 Canvas-HUD/ScoreText (TMP) 進來
-    public Rigidbody playerRb;         // 拖 Player 的 Rigidbody 進來
+    public TextMeshProUGUI scoreText;   
+    public Rigidbody playerRb;          
+    public Transform player;            
+
+    [Header("Pause ()")]
+    public GameObject pauseCanvas;      
+    private bool paused = false;
 
     private int score = 0;
     private float scoreTimer = 0f;
@@ -13,14 +18,15 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         UpdateScoreUI();
+        TryLoadOnStart();               
     }
 
     private void Update()
     {
-        scoreTimer += Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.Escape)) TogglePause();
 
-        // 每 0.3 秒檢查一次是否在移動
-        if (scoreTimer >= 0.3f)
+        scoreTimer += Time.deltaTime;
+        if (!paused && scoreTimer >= 0.3f)
         {
             scoreTimer = 0f;
 
@@ -30,6 +36,15 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    public void TogglePause() => SetPause(!paused);
+    public void SetPause(bool on)
+    {
+        paused = on;
+        Time.timeScale = on ? 0 : 1;
+        if (pauseCanvas) pauseCanvas.SetActive(on);
+    }
+
 
     public void AddScore(int delta)
     {
@@ -44,5 +59,45 @@ public class GameManager : MonoBehaviour
             scoreText.text = $"Score: {score}";
         }
     }
+
+    public void SaveAndQuit()
+    {
+        Vector3 pos = player ? player.position :
+                        (playerRb ? playerRb.position : Vector3.zero);
+
+        var d = new SaveData
+        {
+            px = pos.x,
+            py = pos.y,
+            pz = pos.z,
+            score = score
+        };
+        SaveSystem.Save(d);
+
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #else
+        Application.Quit();
+        #endif
+    }
+
+
+    private void TryLoadOnStart()
+    {
+        if (PlayerPrefs.GetInt("DoLoadOnStart", 0) == 1)
+        {
+            var d = SaveSystem.Load();
+            if (d != null) ApplyLoadedData(d);
+            PlayerPrefs.SetInt("DoLoadOnStart", 0); 
+        }
+    }
+
+    public void ApplyLoadedData(SaveData d)
+    {
+        if (player) player.position = new Vector3(d.px, d.py, d.pz);
+        score = d.score;
+        UpdateScoreUI();
+    }
 }
+
 
