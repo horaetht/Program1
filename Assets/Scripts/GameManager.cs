@@ -4,11 +4,32 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     [Header("Refs")]
-    public TMP_Text scoreText;   // 拖 Canvas-HUD/ScoreText 進來
+    public TextMeshProUGUI scoreText;  // 拖 Canvas-HUD/ScoreText (TMP) 進來
+    public Rigidbody playerRb;         // 拖 Player 的 Rigidbody 進來
 
-    int score = 0;
+    private int score = 0;
+    private float scoreTimer = 0f;
 
-    void Start() => UpdateScoreUI();
+    private void Start()
+    {
+        UpdateScoreUI();
+    }
+
+    private void Update()
+    {
+        scoreTimer += Time.deltaTime;
+
+        // 每 0.3 秒檢查一次是否在移動
+        if (scoreTimer >= 0.3f)
+        {
+            scoreTimer = 0f;
+
+            if (playerRb != null && playerRb.linearVelocity.sqrMagnitude > 0.01f)
+            {
+                AddScore(1);
+            }
+        }
+    }
 
     public void AddScore(int delta)
     {
@@ -16,12 +37,12 @@ public class GameManager : MonoBehaviour
         UpdateScoreUI();
     }
 
-    void UpdateScoreUI()
+    private void UpdateScoreUI()
     {
-        if (scoreText != null) scoreText.text = $"Score: {score}";
-    }
-
-    void Update() {
-        if (Input.GetKeyDown(KeyCode.P)) AddScore(1); // 按 P +1
+        if (scoreText != null)
+        {
+            scoreText.text = $"Score: {score}";
+        }
     }
 }
+
