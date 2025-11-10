@@ -1,3 +1,39 @@
+<<<<<<< HEAD
+# Unity generated
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+UserSettings/
+SysInfoLog.json
+
+# IDE
+.vs/
+.vscode/
+*.csproj
+*.sln
+*.unityproj
+*.pidb
+*.user
+*.userprefs
+
+.DS_Store
+Thumbs.db
+
+*.stacktrace
+
+
+Assets/TextMesh Pro/Examples&Extras/
+
+*.mp4
+*.mov
+*.wav
+*.aif
+*.aiff
+=======
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -23,3 +59,4 @@
 .idea/
 .DS_Store
 Thumbs.db
+>>>>>>> main
